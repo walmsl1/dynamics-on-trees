@@ -1,0 +1,182 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath, array, graphicx, amssymb, mathrsfs, amsthm, mathtools}
+\usepackage{tikz}
+\usepackage{todonotes}
+\usepackage{pgfplots}
+%\usepackage{fontawesome}
+\usepackage{enumitem, multicol}
+\usepackage{fancyhdr}
+\usepackage{wrapfig}
+\usepackage[makeroom]{cancel}
+\usepackage{booktabs}
+\usepackage{comment}
+\usepackage{alltt}
+\usepackage{pdfpages}
+\usepackage{parskip}
+\usepackage{hyperref}
+
+\usepackage{adjustbox}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{N}{@{}m{0pt}@{}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}m{#1}}
+
+\makeatletter
+
+\newcommand*{\underarrow}{\def\@underarrow{\relax}\@ifstar{\@@underarrow}{\def\@underarrow{\hidewidth}\@@underarrow}}
+\newcommand*{\@@underarrow}[2][]{\underset{\@underarrow\substack{\uparrow\if\relax\detokenize{#1}\relax\else\\#1\fi}\@underarrow}{#2}}
+
+\newcommand*{\overarrow}{\def\@overarrow{\relax}\@ifstar{\@@overarrow}{\def\@overarrow{\hidewidth}\@@overarrow}}
+\newcommand*{\@@overarrow}[2][]{\overset{\@overarrow\substack{\if\relax\detokenize{#1}\relax\else#1\\\fi\downarrow}\@overarrow}{#2}}
+\makeatother
+
+\pgfplotsset{compat=1.14}
+\newcommand\samplesize{100}
+%\newcommand{\pageheader}[1]{\textsf{\textbf{\Large{Math 120}}\hfill\underline{\hspace{2.3in}}\\#1\hfill \small{NAME}}\\}
+\newcommand{\babble}[1]{\marginpar{\flushleft\scriptsize\textsf{#1}}}
+
+\newcommand{\ds}{\displaystyle}
+\setlength{\parindent}{10pt}
+
+\tikzset{
+  jumpdot/.style={mark=*,solid},
+  excl/.append style={jumpdot,fill=white},
+  incl/.append style={jumpdot,fill=black},
+}
+
+%Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{definition}\newtheorem{example}[theorem]{Example}
+\theoremstyle{definition}\newtheorem{fact}[theorem]{Fact}
+\theoremstyle{definition}\newtheorem{diagram}[theorem]{Diagram}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{definition}\newtheorem{question}[theorem]{Question}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\f}{\frac 12}
+\DeclareMathOperator{\Span}{span}
+%% Symbolic shortcuts
+\DeclareMathOperator{\orb}{orb}
+
+%\pagenumbering{gobble}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{setspace}
+\doublespacing
+
+\bibliographystyle{plain}
+
+\DeclareMathOperator{\Child}{Chi}
+\DeclareMathOperator{\Gen}{Gen}
+\begin{document}
+
+\title{Chain mixing backward shifts}
+\author{David Walmsley}
+\date{\today}
+\maketitle
+
+\large
+
+In this note, we work towards a more understandable proof of the first half of Theorem 20.
+
+\begin{lemma}
+    Let $w_n$ be a weight sequence, which is a sequence of non-zero (complex) numbers. Then $\ds\sum_{n=1}^\infty |w_1\cdots w_n| =+\infty$ if and only if for each $j\in \N$, $\ds\sum_{n=j+1}^\infty |w_{j+1}\cdots w_n| =+\infty$.
+\end{lemma}
+
+\begin{proof}
+    The backwards direction $(\impliedby)$ is trivial. The forward direction $(\implies)$ involves a little algebra which we will provide at a later date.
+\end{proof}
+
+\begin{lemma}\label{chain lemma}
+    Let $i\in \N$ and $b\in \C$ and assume $w_n$ is a positive weight sequence. If $\ds\sum_{n=1}^\infty w_1\cdots w_n =+\infty$, then for any $\epsilon>0$, there exists an $\epsilon$-chain from $0$ to $b_i e_i$.
+\end{lemma}
+
+\begin{proof}
+    We will find an $\epsilon$-chain from $0$ to $be_i$ of the form
+    \[z^{(0)}=0,z^{(1)},z^{(2)},\ldots,z^{(m)}=be_i.\]
+    By Lemma 0.1, we know $\ds\sum_{n=i+1}^\infty w_{i+1}\cdots w_n =+\infty$. Since $w_{i+1}+w_{i+1}w_{i+2}+\cdots +w_{i+1}w_{i+2}\cdots w_{i+m-1}$ is a partial sum of that infinite series diverging to $+\infty$, there exists some positive integer $m$ such that
+    \[t:=1+w_{i+1}+w_{i+1}w_{i+2}+\cdots +w_{i+1}w_{i+2}\cdots w_{i+m-1}>\frac{|b|}{\epsilon}.\]
+    For $j\in \{1,\ldots,m\}$, we introduce the vectors $r^{(j)}:=\ds\frac{b}{t} e_{i+m-j}$. Now for $j\in \{1,\ldots,m\}$, define
+    \begin{equation}\label{recurrence}
+        z^{(j)}:=B_w z^{(j-1)}+r^{(j)}.
+    \end{equation}
+    To check that $z^{(0)}=0,z^{(1)},z^{(2)},\ldots,z^{(m)}$ is an $\epsilon$-chain is easy: identity (\ref{recurrence}) implies that for $j\in \{0,\ldots,m-1\}$, we have
+    \[\|z^{j+1}-B_w z^{j}\|=\|r^{j+1}\|=\frac{|b|}{t}<\epsilon.\]
+    What remains to show is that $z^{(m)}=be_i$. 
+
+    To do so, apply the recurrence relation (\ref{recurrence}) $m$ times to obtain
+    \begin{equation}\label{zm identity}
+        z^{(m)}=B_w^m z^{(0)}+B_w^{m-1}r^{(1)}+\cdots +B_w r^{(m-1)}+r^{(m)}.
+    \end{equation}
+    
+    For $k\in \{1,\ldots,m-1\}$, we have 
+    \[B_w^{m-k} {\color{red} r^{(k)}}=\frac{1}{t}B_w^{m-k}e_{i+m-k}=\frac bt w_{i+1}w_{i+1}\cdots w_{i+m-k} e_i.\]
+    Then since $B_w^m z^{(0)}=0$ and $r^{(m)}=\frac{b}{t}e_i$, equation (\ref{zm identity}) becomes
+    \begin{align*}
+        z^{(m)} & =0+\frac bt \left(\sum_{n=i+1}^{i+m-1} w_{i+1}\cdots w_n\right)+\frac bt e_i \\
+        & = \frac bt  \left(1+\sum_{n=i+1}^{i+m-1} w_{i+1}\cdots w_n\right)e_i\\
+        & = \frac bt te_i=e_i.
+    \end{align*}
+\end{proof}
+
+Now for what we want.
+
+\begin{theorem}
+    Let $w_n$ be a positive weight sequence. If $\ds\sum_{n=1}^\infty w_1\cdots w_n =+\infty$, then $B_w$ is chain mixing on $\ell^p(\N)$, $1\leq p<\infty$, and on $c_0(\N)$.
+\end{theorem}
+
+\begin{proof}
+    Let $X$ be the vector space in question, and let $x=(a_1,a_2,\ldots)$ and $y=(b_1,b_2,\ldots)$ belong to $X$. As stated in the paper, all we need to do is produce an $1$-chain from $x$ to $y$. First, choose $\widetilde{x}=(a_1,\ldots a_l,0,0,\ldots)$ and $\widetilde{y}=(b_1,\ldots,b_l,0,0,\ldots)$ such that $\|x-B_w\widetilde{x}\|<1$ and $\|y-B_w \widetilde{y}\|<1$. We will obtain an $1$-chain of the form
+    \[x,\widetilde{x},B_w \widetilde{x},B_w^2 \widetilde{x},\ldots,B_w^{l-1}\widetilde{x},0,z_1,z_2,\ldots,z_m,y,\]
+    where $z_m=\widetilde{y}$. To check each pair of successive vectors in the chain satisfies the definition of an $1$-chain, to first and last pairs above satisfy the requirement by virtue of how $\widetilde{x}$ and $\widetilde{y}$ are defined. And since $B_w^l \widetilde{x}=0$, all we must do is describe how to choose the vectors $z_1$ through $z_m$. 
+
+    By Lemma \ref{chain lemma}, for each $i\in \{1,\ldots,l\}$, there exists a $\frac{1}{l}$-chain from $0$ to $b_i e_i$. By inserting zeros at the beginning of each chain if necessary, we can assume each of these chains has the same length $m$; that is, for each $i\in \{1,\ldots,l\}$, we can assume there is a $\frac{1}{l}$-chain of the form
+    \[x_0^{(i)}=0,x_1^{(i)},\ldots,x_m^{(i)}=b_ie_i.\]
+    An easy application of the triangle inequality shows that the chain 
+    $z_0=0,z_1,\ldots,z_m$ defined by
+    \[z_i:=\sum_{j=1}^m x_i^{(j)} \text{ for } i\in\{1,\ldots,l\}\]
+    is a $1$-chain from $0$ to $b_1e_1+\cdots +b_l e_l=\widetilde{y}$, as desired.
+\end{proof}
+
+\underline{{\Large Future Directions}}
+
+If we view $\N$ as a directed tree, let's try to think of the sums $\ds\sum_{n=j+1} \lambda_{j+1}\cdots \lambda_n$ in terms of parents, children, and products of weights. I think $j$ represents our starting vertex position. The weight $\lambda_{j+1}$ is the weight we pick up moving backwards from the child $v_{j+1}$ to $v_j$. Similarly, the second term in the above sum $\lambda_{j+1}\lambda_{j+2}$ is the product of the two weights ``along the path" from vertex $j$ to vertex $j+2$ (its grandchild); the notation we have for this product is $\lambda(v_j\to v_{j+2})$. So $v$ is the vertex at the $j$th position, the infinite sum $\ds\sum_{n=j+1} \lambda_{j+1}\cdots \lambda_n$ is adding up all the weight products from $v$ to its child, $v$ to its grandchild, etc.
+
+Now on a tree, a vertex might have a branching point (meaning it has more than one child), in which case we would need to account for each of its children, and then those childrens' children, etc. For a given ``generation" $n$ of $v$, by which I mean $\Child^n(v)$, we need to add up the weights along each path from $v$ to one of its $n$th grandchildren: $\ds\sum_{u\in \Child^n(v)} \lambda (v\to u)$. But we have to do this for each $n$, and add all of them up. Thus I think the analogue to Theorem 20 in the directed tree setting is the following.
+
+{\bf Conjecture:} Let $(V,E)$ be a directed tree with a root, and let $(\lambda_v)_{v\in V}$ be a positive weight sequence on $V$. Then $B_\lambda$ is chain mixing if and only if, for each $v\in V$, 
+\[\sum_{n=1}^\infty \sum_{u\in\Child^n(v)} \lambda(v\to u)=+\infty.\]
+
+Notice that Theorem 20 only focuses on a single vertex, namely the root vertex; but this is because of the ``symmetry" involved in the tree $\N$, and because of Lemma 0.1.  Thus, to try and prove the above conjecture, we are going to try and port the proof of Theorem 20 to the directed tree setting. We will start with the second half of the proof, but where they focus on $te_1$, we should focus more generally on a $te_v$. Does that make sense?
+
+\underline{{\Large Update}}
+
+The conjecture above is not correct. Recall that if $y:V\to \R$ is a function in $c_0(V)$, the norm of $y$ is given by $\|y\|_\infty = \sup_{v\in V} |y(v)|$.
+
+\begin{lemma}
+    Let $(V,E)$ be a directed tree and let $X$ be $c_0(V)$ or one of the $\ell^p(V)$ spaces, $1\leq p<\infty$, with canonical basis $(e_v)_{v\in V}$, and denote by $\|\cdot \|$ the norm on $X$. Let $x\in X$, let $J$ be a countable set, and let $(\mu_j)_{j\in J}$ be a bounded sequence of numbers, i.e. $\mu=(\mu_j)_{j\in J}\in c_0(V)$. Then 
+    \[\left \|\sum_{j\in J} x_j \mu_j e_j \right\| \leq \|\mu\|_\infty \|x\|.\]
+\end{lemma}
+\end{document}
+
+
+\begin{theorem}\label{c0 theorem}
+Suppose $B_w$ is a weighted backward shift on $c_0$. Then for the following statements, the implications (i)$\iff$(ii)$\implies$(iii) hold.
+\begin{enumerate}[label=\upshape(\roman*)]
+        \item  $B_w$ is surjective and is strongly hypercyclic.
+        \item $B_w$ is surjective and for all nonzero $x\in c_0$, there exists an increasing sequence $(n_k)_{k\geq 1}$ such that $S^{n_k}x\to 0$.
+        \item For any increasing sequence $(i_n)_n$ in $\N$, $\ds\sum_{n=1}^ \infty (M_{i_n}^n)^p =\infty$. On $c_0$, the weaker condition $\ds\lim_{n\to \infty} M_{i_n}^n\not =0$ is sufficient.
+    \end{enumerate}
+\end{theorem}

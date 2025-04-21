@@ -1,0 +1,192 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath, array, graphicx, amssymb, mathrsfs, amsthm, mathtools}
+\usepackage{tikz}
+\usepackage{todonotes}
+\usepackage{pgfplots}
+%\usepackage{fontawesome}
+\usepackage{enumitem, multicol}
+\usepackage{fancyhdr}
+\usepackage{wrapfig}
+\usepackage[makeroom]{cancel}
+\usepackage{booktabs}
+\usepackage{comment}
+\usepackage{alltt}
+\usepackage{pdfpages}
+\usepackage{parskip}
+\usepackage{hyperref}
+
+\usepackage{adjustbox}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{N}{@{}m{0pt}@{}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}m{#1}}
+
+\makeatletter
+
+\newcommand*{\underarrow}{\def\@underarrow{\relax}\@ifstar{\@@underarrow}{\def\@underarrow{\hidewidth}\@@underarrow}}
+\newcommand*{\@@underarrow}[2][]{\underset{\@underarrow\substack{\uparrow\if\relax\detokenize{#1}\relax\else\\#1\fi}\@underarrow}{#2}}
+
+\newcommand*{\overarrow}{\def\@overarrow{\relax}\@ifstar{\@@overarrow}{\def\@overarrow{\hidewidth}\@@overarrow}}
+\newcommand*{\@@overarrow}[2][]{\overset{\@overarrow\substack{\if\relax\detokenize{#1}\relax\else#1\\\fi\downarrow}\@overarrow}{#2}}
+\makeatother
+
+\pgfplotsset{compat=1.14}
+\newcommand\samplesize{100}
+%\newcommand{\pageheader}[1]{\textsf{\textbf{\Large{Math 120}}\hfill\underline{\hspace{2.3in}}\\#1\hfill \small{NAME}}\\}
+\newcommand{\babble}[1]{\marginpar{\flushleft\scriptsize\textsf{#1}}}
+
+\newcommand{\ds}{\displaystyle}
+\setlength{\parindent}{10pt}
+
+\tikzset{
+  jumpdot/.style={mark=*,solid},
+  excl/.append style={jumpdot,fill=white},
+  incl/.append style={jumpdot,fill=black},
+}
+
+%Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{definition}\newtheorem{example}[theorem]{Example}
+\theoremstyle{definition}\newtheorem{fact}[theorem]{Fact}
+\theoremstyle{definition}\newtheorem{diagram}[theorem]{Diagram}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{definition}\newtheorem{question}[theorem]{Question}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\f}{\frac 12}
+\DeclareMathOperator{\Span}{span}
+%% Symbolic shortcuts
+\DeclareMathOperator{\orb}{orb}
+
+%\pagenumbering{gobble}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{setspace}
+\doublespacing
+
+\bibliographystyle{plain}
+
+\DeclareMathOperator{\Child}{Chi}
+\DeclareMathOperator{\Gen}{Gen}
+\begin{document}
+
+%\title{Expansive shifts}
+%\author{David Walmsley}
+%\date{\today}
+%\maketitle
+
+\large
+
+Recall that an \textbf{operator} is just a (continuous) linear transformation between two vectors spaces. A \textbf{Banach space} is a complete normed vector space $X$; being complete means every Cauchy sequence in $X$ converges to some vector in $X$. There are several notions of expansivity that have been recently studied:
+
+\begin{definition}
+    Let $X$ be a Banach space, let $S_X=\{x\in X: \|x\|=1\}$ (meaning $S_X$ is the unit sphere of $X$), and let $T:X\to X$ be an operator.
+    \begin{itemize}
+        \item We say $T$ is \textbf{positively expansive} (PE) if for all $x\in S_X$, $\sup_{n\in \N} \|T^n x\|=+\infty$.
+        \item \sloppy We say $T$ is \textbf{average positively expansive} (APE) if for all non-zero $x\in X$, $\sup_{n\in \N} \left(\frac {1}{n} \sum_{j=1}^n \|T^j x\|\right)=+\infty$.
+        \item We say $T$ is \textbf{uniformly positively expansive} (UPE) if $\lim_{n\to \infty} \|T^n x\|=+\infty$ uniformly on $S_X$, meaning for all $M>0$, there exists $N\in \N$ such that for all $x\in S_X$ and for all $n\geq N$, $\|T^n x\|\geq M$.
+    \end{itemize}
+\end{definition}
+
+There are reasons why operator theorists care about these definitions, but we'll ignore those reasons for now; what we are interested in is characterizing which forward and backward shifts are PE, APE, and UPE. It may look odd that APE doesn't restrict the $x$'s to the unit sphere $S_X$, but we leave it as an exercise to prove the following:
+\begin{center}
+    $T$ is APE $\iff$ $\forall x\in S_X$, $\sup_n \left(\frac {1}{n} \sum_{j=1}^n \|T^j x\|\right)=+\infty$.
+\end{center}
+The exercise follows from the linearity of $T$, and at least one of these useful basic facts about suprema:
+\begin{itemize}
+    \item If $c>0$ and $A\subseteq \R$, then $\sup (cA)=c\sup (A)$.
+    \item $\sup\{a_n: n\in \N\}=+\infty$ $\iff$ for each $k\in \N$, $\sup\{a_n: n\geq k\}=+\infty$.
+\end{itemize}
+
+There are some equivalent characterizations of PE and UPE that were proved in other papers:
+\begin{itemize}
+    \item $T$ is PE $\iff$ $\forall x\in S_X$, $\exists n\in \N$ s.t. $\|T^n x\|\geq 2$.
+    \item $T$ is UPE $\iff$ $\exists n\in \N$ s.t. $\forall x\in S_X$, $\|T^n x\|\geq 2$.
+\end{itemize}
+Those characterizations highlight the difference between PE and UPE. We are not sure if there is an analogous characterization of APE, something like:
+\begin{itemize}
+    \item $T$ is APE $\iff$ $\forall x\in S_X$, $\exists n\in \N$ s.t. $\sup_{n\in \N} \left(\frac {1}{n} \sum_{j=1}^n \|T^j x\|\right)\geq 2$.
+\end{itemize}
+Such a characterization could be worth exploring...
+
+The last thing we'll mention is that it is straightforward to prove 
+\begin{center}
+    UPE $\implies $ APE $\implies$ PE,
+\end{center}
+and the reverse implications do not hold in general.
+
+\section{Positive Expansivity}
+From now on and for the rest of this document, let $X$ be $c_0(\N)$ or one of the spaces $\ell^p(\N)$, $1\leq p<\infty$. A backward shift on $X$ defined by $B_w(x_1,x_2,x_3,\ldots)=(w_2 x_2, w_3 x_3, w_4 x_4,\ldots)$ is never PE. In fact, any operator $T$ with a non-trivial kernel cannot be PE. If $Tx=0$ for some non-zero vector $x$, then $\frac{x}{\|x\|}$ is a unit vector, i.e. $\frac{x}{\|x\|}\in S_X$, and $\|T^n(x/\|x\|)\|=0$ for all $n$.
+
+Let's see how forward shifts on $X$, defined by $F_w (x_1,x_2,x_3,\ldots)=(0,w_1x_1,w_2x_2,\ldots)$, can be PE. For a given basis vector $e_v$, note that $F^n e_v=w_v w_{v+1}\cdots w_{v+n-1} e_{v+n}$.
+
+\begin{proposition}
+    $F_w$ is PE on $X$ if and only if $\sup_{n} |w_1 w_2 \cdots w_n|=+\infty$.
+\end{proposition}
+
+\begin{proof}
+    ($\implies$) Suppose $F_w$ is PE. Then $e_1\in S_X$, and since $F^n e_1 = w_1w_2\cdots w_n e_{n+1}$, by positive expansivity we have $\sup_{n} \|F^n e_1\|=\sup_n |w_1w_2\cdots w_n|=+\infty$.
+
+    ($\impliedby$) Suppose $\sup_{n} |w_1 w_2 \cdots w_n|=+\infty$, from which we can use basic facts about suprema to also conclude that for any $v\in \N$, $\sup_{n\geq v} |w_v\cdots w_{v+n-1}|=+\infty$. Let $x\in S_X$. Since $x\not = 0$, there exists some non-zero term $x_v$ in the sequence $x$. Then
+    \[\|F^n x\| \geq \|F^n(x_v e_v)\|=|x_v| |w_v w_{v+1}\cdots w_{v+n-1}|=\frac{|x_v|}{|w_1\cdots w_{v-1}|} |w_1\cdots w_{v+n-1}|.\]
+    Whence $\sup_n \|F^n x\|=+\infty$.
+\end{proof}
+
+\section{Average Positive Expansivity}
+
+\begin{proposition}
+    $F_w$ is APE on $X$ if and only if $\sup_n \left(\frac 1n\sum_{j=1}^n |w_1\cdots w_j|\right)=+\infty$.
+\end{proposition}
+
+\begin{proof}
+    ($\implies$) Suppose $F$ is APE. Then $e_1\in S_X$, and $F^j(e_1)=w_1\cdots w_j$, so we must have 
+    \[+\infty=\sup_n \left(\frac 1n \sum_{j=1}^n \|F^j e_1\|\right)=\sup_n \left(\frac 1n \sum_{j=1}^n |w_1\cdots w_j|\right).\]
+
+    ($\impliedby$) Suppose $\sup_n \left(\frac 1n\sum_{j=1}^n |w_1\cdots w_j|\right)=+\infty$. Then by basic suprema facts, for any $k\in \N$, we know $\sup_{n\geq k} \left(\frac {1}{n+k}\sum_{j=1}^{n+k} |w_1\cdots w_j|\right)=+\infty$. Let $x\in S_X$. Since $x\not = 0$, there exists some non-zero term $x_v$ in the sequence $x$. Since
+    \begin{align*}
+        \frac 1n \sum_{j=1}^n \|F^j x\| &  \geq \frac 1n \sum_{j=1}^n \|F^j (x_v e_v)\| \\
+        & = \frac{|x_v|}{n} \sum_{j=1}^n |w_v\cdots w_{v+j-1}|\\
+        & = \frac{1}{n}\frac{|x_v|}{|w_1\cdots w_{v-1}|} \left( \frac{n+v-1}{n+v-1}\sum_{j=1}^{n+v-1} |w_1\cdots w_j| - \sum_{j=1}^{v-1} |w_1\cdots w_j|\right),
+    \end{align*}
+    \sloppy and since $\lim_{n\to \infty} \frac{n+v-1}{n}=1$ and $\lim_{n\to +\infty} \frac{1}{n} \sum_{j=1}^{v-1} |w_1\cdots w_j|=0$, we conclude that $\sup_n \left(\frac 1n \sum_{j=1}^n \|F^j x\|\right)=+\infty$, which had to be shown.
+\end{proof}
+
+\section{Uniform Positive Expansivity}
+
+\begin{proposition}
+    $F_w$ is UPE on $X$ if and only if $\ds\lim_{n\to \infty} (\inf_{v\in \N} |w_v\cdots w_{v+n-1}|)=+\infty.$
+\end{proposition}
+
+\begin{proof}
+    ($\implies$) Suppose $F_w$ is UPE. Let $M>0$ be given. By UPE, there exists some $N\in \N$ such that for all $x\in S_X$ and all $n\geq N$, $\|F^n x\|>M$. In particular, for each unit vector $e_v$, we have $\|F^n e_v\|=|w_v\cdots w_{v+n-1}|>M$ whenever $n\geq N$. Hence for $n\geq N$, we can conclude
+    \[\inf_{v\in \N} |w_v\cdots w_{v+n-1}|\geq M,\]
+    which had to be shown.
+
+    ($\impliedby$) Suppose $\ds\lim_{n\to \infty} (\inf_{v\in \N} |w_v\cdots w_{v+n-1}|)=+\infty.$ Then there exists some $N\in \N$ such that for all $n>N$, $\inf_{v\in \N} |w_v\cdots w_{v+n-1}|\geq 2$. Thus for any $x\in S_X$, we have 
+    \[\|F^n x\|=\sum_{v=1}^\infty |w_v\cdots w_{v+n-1}|\cdot |x_v| \geq 2 \sum_{v=1}^\infty |x_v|=2\|x\|,\]
+    which shows $F_w$ is UPE.
+\end{proof}
+
+\section{Expansivity on Trees}
+We already have a characterization of which forward shifts are APE on directed trees. The next steps are to answer the following questions.
+\begin{itemize}
+    \item Can we characterize the UPE forward shifts on trees? Said differently, we want to fill in the blank:
+
+    $F_\lambda$ is UPE on $(V,E)$ $\iff$ \underline{\hspace{3in}}
+    \item Can we characterize the PE forward shifts on trees?
+    \item Can we characterize the UPE backward shifts? APE? PE? You can look up the definition of a backward shift in the directed trees paper. It might help to know that for $f\in \ell^1(V)$ (or any $\ell^p$ space or $c_0$), the $n$th iterate of the backward shift acting on $f$ satisfies
+    \[(B_\lambda^n f)(v)=\sum_{u\in \Child^n(v)} \lambda(v\to u) f(u).\]
+\end{itemize}
+\end{document}
