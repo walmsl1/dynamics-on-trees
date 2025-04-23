@@ -130,18 +130,18 @@ and the reverse implications do not hold in general.
 \section{Positive Expansivity}
 From now on and for the rest of this document, let $X$ be $c_0(\N)$ or one of the spaces $\ell^p(\N)$, $1\leq p<\infty$. A backward shift on $X$ defined by $B_w(x_1,x_2,x_3,\ldots)=(w_2 x_2, w_3 x_3, w_4 x_4,\ldots)$ is never PE. In fact, any operator $T$ with a non-trivial kernel cannot be PE. If $Tx=0$ for some non-zero vector $x$, then $\frac{x}{\|x\|}$ is a unit vector, i.e. $\frac{x}{\|x\|}\in S_X$, and $\|T^n(x/\|x\|)\|=0$ for all $n$.
 
-Let's see how forward shifts on $X$, defined by $F_w (x_1,x_2,x_3,\ldots)=(0,w_1x_1,w_2x_2,\ldots)$, can be PE. For a given basis vector $e_v$, note that $F^n e_v=w_v w_{v+1}\cdots w_{v+n-1} e_{v+n}$.
+Let's see how forward shifts on $X$, defined by $F_w (x_1,x_2,x_3,\ldots)=(0,w_1x_1,w_2x_2,\ldots)$, can be PE. For a given basis vector $e_v$, note that $F_w^n e_v=w_v w_{v+1}\cdots w_{v+n-1} e_{v+n}$.
 
 \begin{proposition}
     $F_w$ is PE on $X$ if and only if $\sup_{n} |w_1 w_2 \cdots w_n|=+\infty$.
 \end{proposition}
 
 \begin{proof}
-    ($\implies$) Suppose $F_w$ is PE. Then $e_1\in S_X$, and since $F^n e_1 = w_1w_2\cdots w_n e_{n+1}$, by positive expansivity we have $\sup_{n} \|F^n e_1\|=\sup_n |w_1w_2\cdots w_n|=+\infty$.
+    ($\implies$) Suppose $F_w$ is PE. Then $e_1\in S_X$, and since $F_w^n e_1 = w_1w_2\cdots w_n e_{n+1}$, by positive expansivity we have $\sup_{n} \|F_w^n e_1\|=\sup_n |w_1w_2\cdots w_n|=+\infty$.
 
     ($\impliedby$) Suppose $\sup_{n} |w_1 w_2 \cdots w_n|=+\infty$, from which we can use basic facts about suprema to also conclude that for any $v\in \N$, $\sup_{n\geq v} |w_v\cdots w_{v+n-1}|=+\infty$. Let $x\in S_X$. Since $x\not = 0$, there exists some non-zero term $x_v$ in the sequence $x$. Then
-    \[\|F^n x\| \geq \|F^n(x_v e_v)\|=|x_v| |w_v w_{v+1}\cdots w_{v+n-1}|=\frac{|x_v|}{|w_1\cdots w_{v-1}|} |w_1\cdots w_{v+n-1}|.\]
-    Whence $\sup_n \|F^n x\|=+\infty$.
+    \[\|F_w^n x\| \geq \|F_w^n(x_v e_v)\|=|x_v| |w_v w_{v+1}\cdots w_{v+n-1}|=\frac{|x_v|}{|w_1\cdots w_{v-1}|} |w_1\cdots w_{v+n-1}|.\]
+    Whence $\sup_n \|F_w^n x\|=+\infty$.
 \end{proof}
 
 \section{Average Positive Expansivity}
@@ -170,23 +170,32 @@ Let's see how forward shifts on $X$, defined by $F_w (x_1,x_2,x_3,\ldots)=(0,w_1
 \end{proposition}
 
 \begin{proof}
-    ($\implies$) Suppose $F_w$ is UPE. Let $M>0$ be given. By UPE, there exists some $N\in \N$ such that for all $x\in S_X$ and all $n\geq N$, $\|F^n x\|>M$. In particular, for each unit vector $e_v$, we have $\|F^n e_v\|=|w_v\cdots w_{v+n-1}|>M$ whenever $n\geq N$. Hence for $n\geq N$, we can conclude
+    ($\implies$) Suppose $F_w$ is UPE. Let $M>0$ be given. By UPE, there exists some $N\in \N$ such that for all $x\in S_X$ and all $n\geq N$, $\|F_w^n x\|>M$. In particular, for each unit vector $e_v$, we have $\|F_w^n e_v\|=|w_v\cdots w_{v+n-1}|>M$ whenever $n\geq N$. Hence for $n\geq N$, we can conclude
     \[\inf_{v\in \N} |w_v\cdots w_{v+n-1}|\geq M,\]
     which had to be shown.
 
     ($\impliedby$) Suppose $\ds\lim_{n\to \infty} (\inf_{v\in \N} |w_v\cdots w_{v+n-1}|)=+\infty.$ Then there exists some $N\in \N$ such that for all $n>N$, $\inf_{v\in \N} |w_v\cdots w_{v+n-1}|\geq 2$. Thus for any $x\in S_X$, we have 
-    \[\|F^n x\|=\sum_{v=1}^\infty |w_v\cdots w_{v+n-1}|\cdot |x_v| \geq 2 \sum_{v=1}^\infty |x_v|=2\|x\|,\]
+    \[\|F_w^n x\|=\sum_{v=1}^\infty |w_v\cdots w_{v+n-1}|\cdot |x_v| \geq 2 \sum_{v=1}^\infty |x_v|=2\|x\|,\]
     which shows $F_w$ is UPE.
 \end{proof}
 
 \section{Expansivity on Trees}
-We already have a characterization of which forward shifts are APE on directed trees. The next steps are to answer the following questions.
-\begin{itemize}
-    \item Can we characterize the UPE forward shifts on trees? Said differently, we want to fill in the blank:
+We already have a characterization of which forward shifts are APE on directed trees. The next steps are to complete the following quests. First, recall a definition.
 
-    $F_\lambda$ is UPE on $(V,E)$ $\iff$ \underline{\hspace{3in}}
-    \item Can we characterize the PE forward shifts on trees?
+\begin{definition}
+A linear transformation $T:X\to X$ is {\bf frequently positively expansive} (FPE) if for each $x\in S_X$ and each $M>0$, the set $\{n\in \N_0: \|T^n x\|>M\}$ has positive lower density. 
+\end{definition}
+\begin{enumerate}
+    \item Let $X=\ell^1(V)$. Prove $F_\lambda$ is UE on $X$ iff $\displaystyle\lim_{n\to \infty} \left(\inf_{v\in V} \sum_{u\in\Child^n(v)} |\lambda(v\to u)|\right)=+\infty$. Does the theorem change if $X=\ell^p(V)$?
+    \item  Let $X=\ell^1(V)$. Prove $F_\lambda$ is PE on $X$ iff $\forall v\in V$, $\displaystyle\sup_{n\in \N} \left( \sum_{u\in\Child^n(v)} |\lambda(v\to u)|\right)=+\infty$.
     \item Can we characterize the UPE backward shifts? APE? PE? You can look up the definition of a backward shift in the directed trees paper. It might help to know that for $f\in \ell^1(V)$ (or any $\ell^p$ space or $c_0$), the $n$th iterate of the backward shift acting on $f$ satisfies
     \[(B_\lambda^n f)(v)=\sum_{u\in \Child^n(v)} \lambda(v\to u) f(u).\]
-\end{itemize}
+    \item When is a backward shift on a tree conjugate to a backward shift on $\N$?
+    \item Find an example of a PE forward shift on $\N$ which is not FPE. 
+    \item Find an example of an FPE forward shift on $\N$ which is not UE. (I think we have done this).
+    \item Find an example an FPE forward shift on $\N$ which is not UE but for each $x\in S_X$ and each $M>0$, the set $\{n\in \N_0: \|T^n x\|>M\}$ has lower density equal to 1.
+    \item Prove that UE implies FPE.
+    \item Does FPE imply APE?
+    \item Does APE imply FPE?
+\end{enumerate}
 \end{document}
