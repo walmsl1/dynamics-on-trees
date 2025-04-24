@@ -1,0 +1,253 @@
+\documentclass{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{textcomp}
+\usepackage{mdwlist}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol,tikz}
+
+\newcommand{\babble}[1]{\marginpar{\flushleft\scriptsize\textsf{#1}}}
+\newcommand{\insertpic}[2][0.4]{\begin{center}\includegraphics*[scale=#1]{Figures/#2}\end{center}}
+\newcommand{\uu}{\mathbf{u}}
+\newcommand{\vv}{\mathbf{v}}
+\newcommand{\ww}{\mathbf{w}}
+\newcommand{\xx}{\mathbf{x}}
+
+\def\R{\mathbb{R}}
+\def\Nul{\operatorname{Nul}}
+\def\Col{\operatorname{Col}}
+\def\Row{\operatorname{Row}}
+\def\tr{\operatorname{tr}}
+
+\oddsidemargin=0in
+\textwidth=5.75in
+\topmargin=-0.5in
+\textheight=9in
+\renewcommand{\marginparwidth}{80pt}
+\newcommand{\RR}{\mathbb{R}}
+
+\begin{document}
+\begin{center}
+{\bf 
+Chain Transitivity Proof for Directed Trees\\
+
+%\centerline{\hspace{1.75cm}\includegraphics[width=0.42\textwidth]{E.jpg}}%
+}
+\end{center}
+\medbreak\medbreak
+
+
+\begin{enumerate}
+
+\item Lemma $0.2$
+
+Let $\displaystyle\sum^{\infty}_{n-1}
+\hspace{0.2cm}\sum_{u\in Chi^n(v)}\hspace{-0.3cm}\lambda(v \rightarrow u) = +\infty$, then for any $b\in \mathbb{C}$ and $v\in (V,E)$, there exists an $\epsilon$-chain from $0$ to $be_v$, $z^{(0)}=0,z^{(1)},\dots,z^{(m)}=be_v$.
+
+\begin{proof}
+    There exists an $m$ large enough such that $t:=\displaystyle\sum^{m-1}_{n=1} \sum_{u\in Chi^n(v)}\hspace{-0.4cm} \lambda(v\rightarrow u) + 1 > \frac{|b|}{\delta}$.
+
+    For $j=\{1,\dots,m\}$, define $r^{(j)}:=\frac{b}{t}\hspace{-0.4cm}\displaystyle\sum_{u\in Chi^{m-j}(v)}\hspace{-0.4cm}e_u$.
+    
+    Let $k_j=|chi^j(v)|$ and $k=max\{k_j\}$.
+
+    Let $\delta>0$ and $\epsilon=k\delta$ ($\epsilon$ is still arbitrary and greater than $0$)
+
+
+    Define $z^{(j)}:= B_\lambda z^{(j-1)} +r^{(j)}$.
+
+    So, $||z^{(j)}-B_\lambda z^{(j-1)}||=||r^{(j)}||=\frac{k_j|b|}{t} \leq \frac{k|b|}{t}\leq k\delta=\epsilon$.
+
+    Then, $z^{(m)}=B_\lambda^m z^{(0)}+B_\lambda^{m-1}+r^{(1)}+\dots+B_\lambda r^{m-1}+r^{(m)}$.
+
+    For $j+\{1,\dots,m-1\}$, $B_\lambda^{m-j}r^{(j)}=\frac{b}{t}B_\lambda^{m-j}\hspace{-0.4cm}\displaystyle\sum_{u\in Chi^{m-j}(v)}\hspace{-0.4cm}e_u = \frac{b}{t}(\hspace{-0.2cm}\displaystyle\sum_{u\in Chi^{m-j}(v)} \hspace{-0.4cm}\lambda(v\rightarrow u))$.
+
+    So, $z^{(m)}=0+\frac{b}{t}(\displaystyle\sum^{m-1}_{n=1}\sum_{u \in Chi^n(v)}\hspace{-0.4cm}\lambda(v\rightarrow u))e_v+\frac{b}{t}e_v$
+
+    $=\frac{b}{t}(1+\displaystyle\sum^{m-1}_{n=1}\sum_{u \in Chi^n(v)}\lambda(v\rightarrow u))e_v=\frac{b}{t}\cdot t e_v=be_v$.
+\end{proof}
+
+
+\item Proposition: Let $(V,E)$ be a directed tree. The, the backwards shift $B_\lambda$ is chain transitive/mixing/recurrent if and only if:
+
+\medskip
+
+\centerline{$\forall v\in V$, $\displaystyle\sum^{\infty}_{n-1}
+\hspace{0.2cm}\sum_{u\in Chi^n(v)}\hspace{-0.3cm}\lambda(v \rightarrow u) = +\infty$.}
+
+\begin{proof}
+
+($\Leftarrow$) We will show that there exists a $1$-chain from $x$ to $y$.
+
+There exists an $l$ big enough so $\tilde{x}=\displaystyle\sum^l_{n=0} \sum_{u\in Chi^n(root)}\hspace{-0.4cm} x_u e_u$. 
+(Where $x_n$ is the value at $u$ in vector $x$)
+such that $||B_\lambda x-\tilde{x}||<1$. This $l$ also ensures that $\tilde{y}=\dots$ such that $||y-B_\lambda\tilde{y}||<1$.
+
+We obtains a $1-chain$ of the form:
+
+\medskip
+
+\centerline{$x,\tilde{x},B_\lambda\tilde{x},B_\lambda^2\tilde{x},\dots,B_\lambda^{l-1}\tilde{x},0,z_1,z_2,\dots,z_m,y$}
+
+\smallskip
+
+Then let $\zeta$ be the number of points in $\tilde{y}$. Thus, $\zeta= \displaystyle\sum^l_{n=1}\sum_{u\in Chi^n(v)}\hspace{-0.35cm}1$.
+
+
+
+By \textit{Lemma 0.2}, there exists a $\frac{1}{\zeta}$-chain from $0$ to $b_ve_v$ $\forall v\in\tilde{y}$.
+
+Since we can insert $0$'s into the beginning of each chain, we can assume that all chains have length $m$. That is, we can assure there exists a $\frac{1}{\zeta}$-chain of the form:
+
+\centerline{$x^{(i)}_0=x^{(i)}_1,x^{(i)}_2,\dots,x^{(i)}_m=b_ve_v$.}
+
+An easy application of the triangle inequality shows that the chain $z_0=0,z_1,z_2,\dots,z_m$ defined by $z_i := \displaystyle\sum^m_{j=1} x^{(j)}_i$ for $i\in \{1,\dots,l\}$, is a $1$-chain from $0$ to $b_1e_1+\dots+b_le_l=\tilde{y}$, as desired. 
+
+
+($\Rightarrow$) We want to show that is the backwards shift is chain transitive, then the sum of the weight sums of all the vertices in the directed tree diverges to $+\infty$. Fix $t>1$, and let $v\in V$. Assume chain transitivity. Thus, there exists some $1$-chain, 
+
+\smallskip
+
+\centerline{$te_v = x_0, x_1,\dots,x_n = te_v$}
+
+\smallskip
+
+such that $||B_\lambda x_i-x_{i+1}||<1$ $\forall i \in (0,\dots,n-1)$.
+
+Therefore, $x_{i+1}=B_\lambda x_i +r^{(1)}$ with $||r^{(i)}||<1$.
+
+Then we have,
+
+\smallskip
+
+\centerline{$te_v=x_n=B_\lambda^n x_0 + B^{n-1}_\lambda r^{0}+B^{n-2}_\lambda r^{1}+\dots+B_\lambda r^{n-2}+r^{(n-1)}$.}
+
+Then, no matter how many children $v$ has, $(B^n_\lambda x_0)(v)=0$.
+
+Thus,
+
+\centerline{$(B^n_\lambda r^{(i)})(v)= \hspace{-0.45cm} \displaystyle\sum_{u\in {Chi}^n(v)}\hspace{-0.4cm}\lambda(v\rightarrow u) r^{(i)}_u$.}
+
+Then we write,
+
+\medskip
+
+\centerline{$t=0+\hspace{-0.6cm} \displaystyle\sum_{u\in {Chi}^{n-1}(v)}\hspace{-0.6cm}\lambda(v\rightarrow u)r_u^{(0)}
++
+\hspace{-0.55cm} \displaystyle\sum_{u\in {Chi}^{n-2}(v)}\hspace{-0.55cm}\lambda(v\rightarrow u)r_u^{(1)}
++\dots+
+\hspace{-0.4cm} \displaystyle\sum_{u\in {Chi}(v)}\hspace{-0.35cm}\lambda(v\rightarrow u)r_u^{(n-2)}
++
+r_u^{(n-1)}$.}
+
+Since $r^{(i)}<1$ then we can substitute $1$ in for the $r$-terms, and the result must be larger. Thus, 
+
+\centerline{$t\leq \hspace{-0.6cm} \displaystyle\sum_{u\in {Chi}^{n-1}(v)}\hspace{-0.6cm}\lambda(v\rightarrow u)
++
+\hspace{-0.55cm} \displaystyle\sum_{u\in {Chi}^{n-2}(v)}\hspace{-0.55cm}\lambda(v\rightarrow u)
++\dots+
+\hspace{-0.4cm} \displaystyle\sum_{u\in {Chi}(v)}\hspace{-0.35cm}\lambda(v\rightarrow u)
++
+1$}
+
+\medskip
+
+\centerline{$ = \displaystyle\sum^{n-1}_{m-1}
+\hspace{0.2cm}\sum_{u\in Chi^m(v)}\hspace{-0.3cm}\lambda(v \rightarrow u) +1 \geq t$.}
+
+Then since $t$ is arbitrarily large, we have,
+
+\medskip
+
+\centerline{$ \displaystyle\sum^{\infty}_{m-1}
+\hspace{0.2cm}\sum_{u\in Chi^m(v)}\hspace{-0.3cm}\lambda(v\rightarrow u) = +\infty$} 
+as desired.
+
+
+
+\end{proof}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\item Lemma $0.2$
+
+Let $\displaystyle\sum^{\infty}_{n=1} \sum_{u \in Chi^n(v)} \lambda(v \to u) = +\infty$. Then for any $b \in \mathbb{C}$ and $v \in (V,E)$, there exists an $\epsilon$-chain from $0$ to $be_v$, $z^{(0)}=0, z^{(1)}, \dots, z^{(m)}=be_v$.
+
+\begin{proof}
+    There exists an $m$ large enough such that $t:=\displaystyle\sum^{m-1}_{n=1} \sum_{u \in Chi^n(v)} \lambda(v \to u) + 1 > \frac{|b|}{\delta}$.
+
+    Define $r^{(j)}:=\frac{b}{t} \sum_{u \in Chi^{m-j}(v)} e_u$.
+    
+    Let $\delta>0$ and $\epsilon = \delta$.
+    
+    Define $z^{(j)}:= B_\lambda z^{(j-1)} + r^{(j)}$.
+
+    Then, $||z^{(j)}-B_\lambda z^{(j-1)}|| = ||r^{(j)}|| = \frac{|b|}{t} \leq \delta = \epsilon$.
+
+    So, $z^{(m)} = \frac{b}{t} (1 + \sum^{m-1}_{n=1} \sum_{u \in Chi^n(v)} \lambda(v \to u)) e_v = be_v$.
+\end{proof}
+
+$\tilde{\tilde{x}}$ 
+$\overset{\infty}{x}_0$
+$\varepsilon \epsilon$
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+Lemma: $\forall v \in (V,E)$,
+$\displaystyle\sum^\infty_{n=1}\{sup|\lambda(u\rightarrow v)|:u\in Chi^n(v)\}=+\infty$ $\Rightarrow$ $\epsilon$-chain from $0$ to $be_v$.
+
+\begin{proof}
+    Let $\displaystyle\sum^\infty_{n=1}\{sup|\lambda(v\rightarrow u)|:u\in Chi^n(v)\}=+\infty$ for all $v\in (V,E)$. 
+    
+    \medskip 
+    
+    Let $b\in\mathbb{K}$, let $\epsilon>0$, and let $v\in(V,E)$. 
+
+    There exists an $m$ large enough such that $\displaystyle\sum^{m-1}_{n=1}\{sup|\lambda(v\rightarrow u)|:u\in Chi^n(v)\}+1>\frac{|b|}{\epsilon}$.
+
+    Then there also exists $u_i\in Chi^i(v)$, $(i\in\{1,\dots,m-1\})$ such that:
+
+    \medskip
+    
+    \centerline{$t:=\displaystyle\sum^{m-1}_{n=1}\lambda(v\rightarrow u_n)+1>\frac{|b|}{\epsilon}$,} 
+    
+    because we can find $\lambda(v\rightarrow u_n)$ as close to $sup|\lambda(v\rightarrow u)|:u \in Chi^n(v)$ as we want by the definition of a supremum. 
+
+    For $j\in \{1.\dots,m\}$, define $r^{(j)}:=\frac{b}{t}e_{u_{m-j}}$.
+
+    Then define $z^{(j)}:=B_\lambda z^{(j-1)}+r^{(j)}$, so $||z^{(j)}-B_\lambda z^{(j-1)}||=||r^{(j)}||=\frac{b}{t}<\epsilon$.
+
+    Now we have an $\epsilon$-chain: $z^{(0)}=0,z^{(1)},\dots,r^{(m)}=be_v$.
+
+    So
+    \begin{enumerate}
+        \item $z^{(m)}=B_\lambda^m z^{(0)}+B_\lambda^{m-1}r^{(1)}+\dots+B_\lambda r^{(m-1)}+r^{(m)}$.
+
+        \item $B_\lambda^{m-j}r^{(j)}= B_\lambda^{m-j}\frac{b}{t}e_{u_{m-j}}=\frac{b}{t}\lambda(v \rightarrow u_{m-j})e_v$.
+    \end{enumerate}
+   
+
+    Thus, $z^{(m)}= \frac{b}{t}\lambda(v\rightarrow u_{m-1})e_v+\dots+\frac{b}{t}\lambda(v\rightarrow u_1)e_v=\frac{b}{t}(\displaystyle\sum^{m-1}_{n=1}\lambda(v\rightarrow u_n)+1)e_v=\frac{b}{t}\cdot te_v=be_v$, as desired.
+\end{proof}
+
+\textbf{Theorem:} $\displaystyle\sum sup|\lambda()|=+\infty$, $\Rightarrow$ chain mixing.
+
+$1$-chain: $x,\tilde{x},B_\lambda\tilde{x}, B^2_\lambda\tilde{x},\dots,0,z_1,\dots,z_m=\tilde{\tilde{y}},\tilde{y},y$...
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{enumerate}
+\end{document}
